@@ -1,0 +1,28 @@
+{
+  "name": "game-of-life",
+  "version": "0.0.0",
+  "description": "Implementation of Conway's Game of Life",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marushkevych/game-of-life.git"
+  },
+  "keywords": [
+    "Conway",
+    "Game",
+    "of",
+    "Life"
+  ],
+  "author": "Andrey Marushkevych",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/marushkevych/game-of-life/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-connect": "~0.7.1"
+  }
+}

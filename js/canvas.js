@@ -1,8 +1,18 @@
-var filled;
-var board = new Board(30);
+var size = 50;
 var scale = 10;
-var canvas = document.getElementById("canvas");
+var length = size * scale;
+
+var board = new Board(size);
+var canvas=document.createElement("canvas");
+canvas.setAttribute("id", "canvas");
+document.body.appendChild(canvas);
 var context = canvas.getContext("2d");
+canvas.width = length + 1;
+canvas.height = length + 1;
+canvas.style.left = "100px";
+canvas.style.top = "100px";
+canvas.style.position = "absolute";
+
 canvas.addEventListener("click", canvasClick, false);
 
 function start() {
@@ -10,7 +20,7 @@ function start() {
 
 function canvasClick(e) {
     var cell = getClickedCell(e);
-    console.log(cell.x, cell.y)
+//    console.log(cell.x, cell.y)
     cell.isAlive = !cell.isAlive;
     drawCell(cell)
 }
@@ -21,6 +31,7 @@ function getClickedCell(e) {
     if (e.pageX != undefined && e.pageY != undefined) {
         x = e.pageX;
         y = e.pageY;
+        console.log(x, y)
     }
     else {
         x = e.clientX + document.body.scrollLeft +
@@ -29,8 +40,11 @@ function getClickedCell(e) {
                 document.documentElement.scrollTop;
     }
 
-//    x -= gCanvasElement.offsetLeft;
-//    y -= gCanvasElement.offsetTop;
+//    x -= canvas.offsetLeft;
+//    y -= canvas.offsetTop;
+    x -= 99;
+    y -= 99;
+    console.log(x, y)
 
     var cell = board.getCell(Math.floor(x / scale),
             Math.floor(y / scale));
@@ -40,14 +54,14 @@ function getClickedCell(e) {
 
 // grid
 
-for (var x = 0.5; x < 520; x += scale) {
-    context.moveTo(x, 0);
-    context.lineTo(x, 380);
+for (var x = 0; x <= length; x += scale) {
+    context.moveTo(x + 0.5, 0);
+    context.lineTo(x + 0.5, length);
 }
 
-for (var y = 0.5; y < 390; y += scale) {
-    context.moveTo(0, y);
-    context.lineTo(510, y);
+for (var y = 0; y <= length; y += scale) {
+    context.moveTo(0, y + 0.5);
+    context.lineTo(length, y + 0.5);
 }
 
 context.strokeStyle = "#eee";
@@ -65,7 +79,6 @@ context.stroke();
 //  console.log('i=',i)
 //}
 
-var board = new Board(30);
 board.cells[5].isAlive = true
 board.cells[160].isAlive = true
 
