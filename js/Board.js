@@ -12,7 +12,7 @@ function Board(size){
 }
 
 Board.prototype.getCell = function(x,y){
-    console.log('getting', x, y)
-    return this.cols[y][x];
+    var cell = this.cols[x][y];
+    return cell;
 }
 

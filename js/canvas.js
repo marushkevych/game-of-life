@@ -32,8 +32,8 @@ function getClickedCell(e) {
 //    x -= gCanvasElement.offsetLeft;
 //    y -= gCanvasElement.offsetTop;
 
-    var cell = board.getCell(Math.floor(y / scale),
-            Math.floor(x / scale));
+    var cell = board.getCell(Math.floor(x / scale),
+            Math.floor(y / scale));
     return cell;
 }
 
