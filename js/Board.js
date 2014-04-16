@@ -1,9 +1,18 @@
 function Board(size){
     this.cells = [];
+    this.cols = [];
     for(var i = 1; i <= size; i++){
+        var col = [];
+        this.cols[i] = col;
         for(var j = 1; j <= size; j++){
-            this.cells.push(new Cell(i,j))
+            col[j] = new Cell(i,j);
+            this.cells.push(col[j] )
         }
     }
+}
+
+Board.prototype.getCell = function(x,y){
+    console.log('getting', x, y)
+    return this.cols[y][x];
 }
 

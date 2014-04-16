@@ -1,58 +1,58 @@
 var filled;
+var board = new Board(30);
+var scale = 10;
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-function draw_b() {
-  filled ? context.clearRect(50, 20, 150, 100) : context.fillRect(50, 25, 150, 100);
-  filled = !filled;
+canvas.addEventListener("click", canvasClick, false);
+
+function start() {
 }
+
+function canvasClick(e) {
+    var cell = getClickedCell(e);
+    console.log(cell.x, cell.y)
+    cell.isAlive = !cell.isAlive;
+    drawCell(cell)
+}
+
+function getClickedCell(e) {
+    var x;
+    var y;
+    if (e.pageX != undefined && e.pageY != undefined) {
+        x = e.pageX;
+        y = e.pageY;
+    }
+    else {
+        x = e.clientX + document.body.scrollLeft +
+                document.documentElement.scrollLeft;
+        y = e.clientY + document.body.scrollTop +
+                document.documentElement.scrollTop;
+    }
+
+//    x -= gCanvasElement.offsetLeft;
+//    y -= gCanvasElement.offsetTop;
+
+    var cell = board.getCell(Math.floor(y / scale),
+            Math.floor(x / scale));
+    return cell;
+}
+
 
 // grid
 
-for (var x = 0.5; x < 520; x += 10) {
-  context.moveTo(x, 0);
-  context.lineTo(x, 380);
-} 
+for (var x = 0.5; x < 520; x += scale) {
+    context.moveTo(x, 0);
+    context.lineTo(x, 380);
+}
 
-for (var y = 0.5; y < 390; y += 10) {
-  context.moveTo(0, y);
-  context.lineTo(510, y);
+for (var y = 0.5; y < 390; y += scale) {
+    context.moveTo(0, y);
+    context.lineTo(510, y);
 }
 
 context.strokeStyle = "#eee";
 context.stroke();
 
-// coordinates
-
-context.beginPath();
-context.moveTo(0, 40);
-context.lineTo(240, 40);
-context.moveTo(260, 40);
-context.lineTo(500, 40);
-context.moveTo(495, 35);
-context.lineTo(500, 40);
-context.lineTo(495, 45);
-
-context.moveTo(60, 0);
-context.lineTo(60, 153);
-context.moveTo(60, 173);
-context.lineTo(60, 375);
-context.moveTo(65, 370);
-context.lineTo(60, 375);
-context.lineTo(55, 370);
-
-
-context.strokeStyle = "#000";
-context.stroke();
-
-// name the axes
-
-context.font = "bold 12px sans-serif";
-context.fillText("x", 248, 43);
-context.fillText("y", 58, 165);
-
-context.font = "bold 12px sans-serif";
-context.fillText("x", 248, 43);
-context.fillText("y", 58, 165);
 
 // dots
 
@@ -67,9 +67,16 @@ context.fillText("y", 58, 165);
 
 var board = new Board(30);
 board.cells[5].isAlive = true
+board.cells[160].isAlive = true
 
 // draw cells
-board.cells.forEach(function(cell){
-    if(cell.isAlive)
-    context.fillRect(cell.x*10-10, cell.y*10-10, 10, 10);
+board.cells.forEach(function(cell) {
+    drawCell(cell);
 });
+
+function drawCell(cell) {
+    if (cell.isAlive)
+        context.fillRect(cell.x * scale - scale + 1, cell.y * scale - scale + 1, scale - 1, scale - 1);
+    else
+        context.clearRect(cell.x * scale - scale + 1, cell.y * scale - scale + 1, scale - 1, scale - 1);
+}
