@@ -13,9 +13,9 @@ module.exports = function(grunt) {
         },
         jasmine: {
             unit: {
-                src: ['lib/*.js','js/*.js', 'src/utils/*.js'],
+//                src: ['bundle.js'],
                 options: {
-                    specs: 'spec/*Spec.js'
+                    specs: 'spec/spec-bundle.js'
                 }
             }
         },
@@ -36,15 +36,15 @@ module.exports = function(grunt) {
                 options: {
                     keepalive: true
                 },
-                src: './js/**/*.js',
+                src: './js/grid/Grid.js',
                 dest: 'bundle.js'
             },
             test: {
-                src: './js/**/*.js',
-                dest: 'bundle.js'
+                src: './spec/**/*Spec.js',
+                dest: 'spec/spec-bundle.js'
             },
             dist: {
-                src: './js/**/*.js',
+                src: './js/grid/Grid.js',
                 dest: 'bundle.js'
             }
             
@@ -54,15 +54,16 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-watchify');
 //    grunt.loadNpmTasks('grunt-contrib-uglify');
-//    grunt.loadNpmTasks('grunt-watchify');
 //
 //    grunt.registerTask('watch', ['watchify:dev']); // watch for changes and build the dev bundle
 //    grunt.registerTask('server', ['connect:server','watchify:dev']);
-//    grunt.registerTask('test', ['watchify:test','jasmine:unit']);
 //    grunt.registerTask('dist', ['watchify:dist','uglify']);
 //    
 //    // Default task(s).
 //    grunt.registerTask('default', ['test',  'dist']);
+
+    grunt.registerTask('test', ['watchify:test','jasmine:unit']);
 
 };

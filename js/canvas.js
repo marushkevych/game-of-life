@@ -1,16 +1,19 @@
-var size = 40;
-var scale = 15;
+var size = 3;
+var scale = 40;
+var positionLeft = "104px";
+var positionTop = "50px";
+
 var length = size * scale;
 
 var board = new Board(size);
 var canvas=document.createElement("canvas");
 canvas.setAttribute("id", "canvas");
-document.body.appendChild(canvas);
+if(document.body) document.body.appendChild(canvas);
 var context = canvas.getContext("2d");
 canvas.width = length + 1;
 canvas.height = length + 1;
-canvas.style.left = "100px";
-canvas.style.top = "100px";
+canvas.style.left = positionLeft;
+canvas.style.top = positionTop;
 canvas.style.position = "absolute";
 
 canvas.addEventListener("click", canvasClick, false);
@@ -42,13 +45,18 @@ function getClickedCell(e) {
 
 //    x -= canvas.offsetLeft;
 //    y -= canvas.offsetTop;
-    x -= 100;
-    y -= 100;
+//      console.log(canvas.offsetLeft)
+//      console.log(canvas.offsetTop)
+    
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
     console.log(x, y)
+    if(x<0) x=0;
+    if(y<0) y=0;
     
     // ajust for border
-    if(x!=0) x-=1;
-    if(y!=0) y-=1;
+//    if(x>0) x-=1;
+//    if(y>0) y-=1;
 
     var cell = board.getCell(Math.floor(x / scale) + 1,
             Math.floor(y / scale) +1) ;
@@ -84,8 +92,6 @@ context.stroke();
 //  console.log('i=',i)
 //}
 
-board.cells[5].isAlive = true
-board.cells[160].isAlive = true
 
 // draw cells
 board.cells.forEach(function(cell) {
