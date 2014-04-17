@@ -1,5 +1,5 @@
-var size = 50;
-var scale = 10;
+var size = 40;
+var scale = 15;
 var length = size * scale;
 
 var board = new Board(size);
@@ -42,12 +42,17 @@ function getClickedCell(e) {
 
 //    x -= canvas.offsetLeft;
 //    y -= canvas.offsetTop;
-    x -= 99;
-    y -= 99;
+    x -= 100;
+    y -= 100;
     console.log(x, y)
+    
+    // ajust for border
+    if(x!=0) x-=1;
+    if(y!=0) y-=1;
 
-    var cell = board.getCell(Math.floor(x / scale),
-            Math.floor(y / scale));
+    var cell = board.getCell(Math.floor(x / scale) + 1,
+            Math.floor(y / scale) +1) ;
+    console.log(cell.x, cell.y)
     return cell;
 }
 
