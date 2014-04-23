@@ -1,21 +1,230 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = function Cell(x,y){
+    this.x = x;
+    this.y = y;
+}
+
+
+},{}],2:[function(require,module,exports){
 var _ = require('underscore');
-function init(userConfig){
-    var config = {
-        
-    };
+var Cell = require('./Cell');
+module.exports = GridModel;
+
+function GridModel(size){
+    this.size = size;
+    this.cells = [];
+    this.cols = [];
+    for(var i = 1; i <= size; i++){
+        var col = [];
+        this.cols[i] = col;
+        for(var j = 1; j <= size; j++){
+            col[j] = new Cell(i,j);
+            this.cells.push(col[j]);
+        }
+    }
+}
+
+GridModel.prototype.eachCell = function(f){
+    this.cells.forEach(f);
+};
+
+GridModel.prototype.getCell = function(x,y){
+    var cell = this.cols[x][y];
+    return cell;
+};
+
+GridModel.prototype.getNeighbors = function(x,y){
+    var allNeighbors = [
+        this.getNextCellNorthWest(x,y),
+        this.getNextCellUp(x,y),
+        this.getNextCellNorthEast(x,y),
+        this.getNextCellRight(x,y),
+        this.getNextCellSouthEast(x,y),
+        this.getNextCellDown(x,y),
+        this.getNextCellSouthWest(x,y),
+        this.getNextCellLeft(x,y)
+    ];
     
+    // filter non null
+    return _.filter(allNeighbors, function(cell){
+        return cell != null;
+    });
+};
+
+// returns its next cell in diagonal row in north west direction, or null if this is the last cell in the row
+GridModel.prototype.getNextCellNorthWest = function(x,y)
+{
+  if (y - 1 == 0 || x - 1 == 0) 
+    return null;
+  return this.getCell(x - 1, y - 1);
+};
+
+// returns its upper neigbour, or null if this is the top cell on the board
+GridModel.prototype.getNextCellUp = function(x,y)
+{
+  if (y - 1 == 0) 
+    return null;
+  return this.getCell(x, y - 1);
+};
+
+// returns its next cell in diagonal row in north east direction, or null if this is the last cell in the row
+GridModel.prototype.getNextCellNorthEast = function(x,y)
+{
+  if (x + 1 > this.size || y - 1 == 0) 
+    return null;
+  return this.getCell(x + 1, y - 1);
+};
+
+// returns its next cell on the right, or null if this is the last cell in the row
+GridModel.prototype.getNextCellRight = function(x,y)
+{
+  if (x + 1 > this.size) 
+    return null;
+  return this.getCell(x + 1, y);
+};
+
+// returns its next cell in diagonal row in south east direction, or null if this is the last cell in the row
+GridModel.prototype.getNextCellSouthEast = function(x,y)
+{
+  if (y + 1 > this.size || x + 1 > this.size) 
+    return null;
+  return this.getCell(x + 1, y + 1);
+};
+
+// returns its next neigbour below, or null if this is the bottom cell on the board
+GridModel.prototype.getNextCellDown = function(x,y)
+{
+  if (y + 1 > this.size) 
+    return null;
+  return this.getCell(x, y + 1);
+};
+
+// returns its next cell in diagonal row in south west direction, or null if this is the last cell in the row
+GridModel.prototype.getNextCellSouthWest = function(x,y)
+{
+  if (x - 1 == 0 || y + 1 > this.size) 
+    return null;
+  return this.getCell(x - 1, y + 1);
+};
+
+// returns its next cell on the left, or null if this is the first cell in the row
+GridModel.prototype.getNextCellLeft = function(x,y)
+{
+  if (x - 1 == 0) 
+    return null;
+  return this.getCell(x -1, y);
+};
+
+
+
+
+},{"./Cell":1,"underscore":4}],3:[function(require,module,exports){
+var _ = require('underscore');
+exports.init = function(canvas, userConfig) {
+
+    // TODO make border width configurable
+    
+    var config = {
+        size: 10,
+        scale: 10,
+        positionLeft: "0px",
+        positionTop: "0px",
+        strokeStyle: "#eee"
+    };
+
+    var onCellClickHandler;
+
     // aply user config
     _.extend(config, userConfig);
-    
-    
-    return {
-        onCellClick: function(callback){
-            
+
+    // init canvas
+    var length = config.size * config.scale;
+    canvas.width = length + 1;
+    canvas.height = length + 1;
+    canvas.style.left = config.positionLeft;
+    canvas.style.top = config.positionTop;
+    canvas.style.position = "absolute";
+
+    canvas.addEventListener("click", canvasClick, false);
+
+    function canvasClick(e) {
+        // get cell object and call onCellClick handler
+        if (onCellClickHandler)
+            onCellClickHandler(getClickedCell(e));
+    }
+
+    function getClickedCell(e) {
+        var x;
+        var y;
+        if (e.pageX != undefined && e.pageY != undefined) {
+            x = e.pageX;
+            y = e.pageY;
         }
+//        else {
+//            x = e.clientX + document.body.scrollLeft +
+//                    document.documentElement.scrollLeft;
+//            y = e.clientY + document.body.scrollTop +
+//                    document.documentElement.scrollTop;
+//        }
+
+//    x -= canvas.offsetLeft;
+//    y -= canvas.offsetTop;
+//      console.log(canvas.offsetLeft)
+//      console.log(canvas.offsetTop)
+
+        x -= canvas.offsetLeft;
+        y -= canvas.offsetTop;
+
+
+        // ajust for border
+//    if(x>0) x-=1;
+//    if(y>0) y-=1;
+
+        var cellX = Math.floor(x / config.scale);
+        var cellY = Math.floor(y / config.scale);
+        if (cellX < config.size)
+            cellX += 1;
+        if (cellY < config.size)
+            cellY += 1;
+        return {x: cellX, y: cellY};
+    }
+
+    function paintGrid() {
+// grid
+        var context = canvas.getContext("2d");
+
+        for (var x = 0; x <= length; x += config.scale) {
+            context.moveTo(x + 0.5, 0);
+            context.lineTo(x + 0.5, length);
+        }
+
+        for (var y = 0; y <= length; y += config.scale) {
+            context.moveTo(0, y + 0.5);
+            context.lineTo(length, y + 0.5);
+        }
+
+        context.strokeStyle = config.strokeStyle;
+        context.stroke();
+    }
+
+    return {
+        onCellClick: function(handler) {
+            onCellClickHandler = handler;
+        },
+        fillCell: function(cell) {
+            var context = canvas.getContext("2d");
+            var s = config.scale;
+            context.fillRect(cell.x * s - s + 1, cell.y * s - s + 1, s - 1, s - 1);
+        },
+        clearCell: function(cell) {
+            var context = canvas.getContext("2d");
+            var s = config.scale;
+            context.clearRect(cell.x * s - s + 1, cell.y * s - s + 1, s - 1, s - 1);
+        },
+        paintGrid: paintGrid
     };
-}
-},{"underscore":2}],2:[function(require,module,exports){
+};
+},{"underscore":4}],4:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1360,5 +1569,167 @@ function init(userConfig){
   }
 }).call(this);
 
-},{}]},{},[1])
+},{}],5:[function(require,module,exports){
+var GridModel = require('../../js/grid/GridModel');
+var Cell = require('../../js/grid/Cell');
+
+describe("GridModel", function() {
+    describe("getNeighbors()", function() {
+        it("should get all the neighbors of middle cell", function(){
+            var model = new GridModel(3);
+            var neighbors = model.getNeighbors(2,2);
+            expect(neighbors[0]).toEqual(new Cell(1,1));
+            expect(neighbors[1]).toEqual(new Cell(2,1));
+            expect(neighbors[2]).toEqual(new Cell(3,1));
+            expect(neighbors[3]).toEqual(new Cell(3,2));
+            expect(neighbors[4]).toEqual(new Cell(3,3));
+            expect(neighbors[5]).toEqual(new Cell(2,3));
+            expect(neighbors[6]).toEqual(new Cell(1,3));
+            expect(neighbors[7]).toEqual(new Cell(1,2));
+        });
+        it("should get only existing neighbors for top left cell", function(){
+            var model = new GridModel(3);
+            var neighbors = model.getNeighbors(1,1);
+            expect(neighbors[0]).toEqual(new Cell(2,1));
+            expect(neighbors[1]).toEqual(new Cell(2,2));
+            expect(neighbors[2]).toEqual(new Cell(1,2));
+        });
+        it("should get only existing neighbors for top right cell", function(){
+            var model = new GridModel(3);
+            var neighbors = model.getNeighbors(3,1);
+            expect(neighbors[0]).toEqual(new Cell(3,2));
+            expect(neighbors[1]).toEqual(new Cell(2,2));
+            expect(neighbors[2]).toEqual(new Cell(2,1));
+        });
+        it("should get only existing neighbors for bottom right cell", function(){
+            var model = new GridModel(3);
+            var neighbors = model.getNeighbors(3,3);
+            expect(neighbors[0]).toEqual(new Cell(2,2));
+            expect(neighbors[1]).toEqual(new Cell(3,2));
+            expect(neighbors[2]).toEqual(new Cell(2,3));
+        });
+        it("should get only existing neighbors for bottom left cell", function(){
+            var model = new GridModel(3);
+            var neighbors = model.getNeighbors(1,3);
+            expect(neighbors[0]).toEqual(new Cell(1,2));
+            expect(neighbors[1]).toEqual(new Cell(2,2));
+            expect(neighbors[2]).toEqual(new Cell(2,3));
+        });
+    });
+});
+
+
+},{"../../js/grid/Cell":1,"../../js/grid/GridModel":2}],6:[function(require,module,exports){
+var init = require('../../js/grid/GridView').init;
+
+describe("GridView", function() {
+    // canvas html element mock
+    var canvas;
+
+    beforeEach(function() {
+        canvas = {
+            style: {},
+            eventHandlers: {},
+            addEventListener: function(event, handler){
+                this.eventHandlers[event] = handler;
+            }
+        };
+    });
+
+    describe("init", function() {
+        it("should set canvas size properties", function() {
+            init(canvas, {size:20, scale:10});
+            expect(canvas.width).toBe(201);
+            expect(canvas.width).toBe(201);
+        });
+        it("should use default canvas size properties: {size:10, scale:10}", function() {
+            init(canvas);
+            expect(canvas.width).toBe(101);
+            expect(canvas.width).toBe(101);
+        });
+        it("should set canvas position properties", function() {
+            init(canvas, {positionLeft:'50px', positionTop:'30px'});
+            expect(canvas.style.left).toBe('50px');
+            expect(canvas.style.top).toBe('30px');
+            expect(canvas.style.position).toBe('absolute');
+        });
+        it("should use default canvas position properties: {positionLeft:'0px', positionTop:'0px'}", function() {
+            init(canvas);
+            expect(canvas.style.left).toBe('0px');
+            expect(canvas.style.top).toBe('0px');
+            expect(canvas.style.position).toBe('absolute');
+        });
+    });
+    describe("onCellClik event", function() {
+        var grid;
+        var clickedCell;
+        beforeEach(function(){
+            grid = init(canvas, {size:20, scale:10});
+            clickedCell = null;
+            grid.onCellClick(function(cell) {
+                clickedCell = cell;
+            });
+        });
+        it("should pass correct cell coordinates when top left corner is clicked", function() {
+            canvas.offsetLeft = 0;
+            canvas.offsetTop = 0;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:0, pageY:0});
+            expect(clickedCell).toEqual({x:1,y:1});
+        });
+        it("should pass correct cell coordinates when grid has offset and top left corner is clicked", function() {
+            canvas.offsetLeft = 10;
+            canvas.offsetTop = 10;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:10, pageY:10});
+            expect(clickedCell).toEqual({x:1,y:1});
+        });
+        it("should pass correct cell coordinates when bottom right corner is clicked", function() {
+            canvas.offsetLeft = 0;
+            canvas.offsetTop = 0;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:201, pageY:201});
+            expect(clickedCell).toEqual({x:20,y:20});
+        });
+        it("should pass correct cell coordinates when grid has offset and bottom right corner is clicked", function() {
+            canvas.offsetLeft = 10;
+            canvas.offsetTop = 10;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:211, pageY:211});
+            expect(clickedCell).toEqual({x:20,y:20});
+        });
+        
+        it("should pass correct cell coordinates when top left corner of bottom right cell is clicked", function() {
+            canvas.offsetLeft = 10;
+            canvas.offsetTop = 10;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:200, pageY:200});
+            expect(clickedCell).toEqual({x:20,y:20});
+        });
+        it("should pass correct cell coordinates when bottom right corner of top left cell is clicked", function() {
+            canvas.offsetLeft = 10;
+            canvas.offsetTop = 10;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:19, pageY:19});
+            expect(clickedCell).toEqual({x:1,y:1});
+        });
+        it("should pass correct cell coordinates when top left corner of (2, 2) cell is clicked", function() {
+            canvas.offsetLeft = 10;
+            canvas.offsetTop = 10;
+            
+            // fire click event
+            canvas.eventHandlers.click({pageX:20, pageY:20});
+            expect(clickedCell).toEqual({x:2,y:2});
+        });
+    });
+});
+
+
+},{"../../js/grid/GridView":3}]},{},[5,6])
 ;

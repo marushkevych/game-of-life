@@ -1,14 +1,16 @@
-var size = 3;
-var scale = 40;
-var positionLeft = "104px";
-var positionTop = "50px";
+var size = 20;
+var scale = 10;
+var positionLeft = "10px";
+var positionTop = "10px";
 
 var length = size * scale;
 
 var board = new Board(size);
-var canvas=document.createElement("canvas");
-canvas.setAttribute("id", "canvas");
-if(document.body) document.body.appendChild(canvas);
+//var canvas=document.createElement("canvas");
+//canvas.setAttribute("id", "canvas");
+//if(document.body) document.body.appendChild(canvas);
+
+var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 canvas.width = length + 1;
 canvas.height = length + 1;
