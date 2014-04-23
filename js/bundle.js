@@ -93,9 +93,9 @@ function start() {
     intervalId = setInterval(tick, 200);
 
     // log initial setup
-    model.eachCell(function(cell) {
-        if(cell.isAlive) console.log("model.getCell("+cell.x+"," +  cell.y +").isAlive=true;")
-    });
+//    model.eachCell(function(cell) {
+//        if(cell.isAlive) console.log("model.getCell("+cell.x+"," +  cell.y +").isAlive=true;")
+//    });
 
 
     function tick() {
