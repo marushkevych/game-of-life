@@ -17,10 +17,10 @@ sample2.addEventListener("click", simmetricSetup, false);
 
 var text = document.getElementById("text");
 text.style.left = '20px';
-text.style.top = '840px';
+text.style.top = '850px';
 text.style.position = "absolute";        
 
-var view = require('./grid/GridView').init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "120px"});
+var view = require('./grid/GridView').init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "130px"});
 var model = new GridModel(size);
 var intervalId;
 
