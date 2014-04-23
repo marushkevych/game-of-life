@@ -1,13 +1,13 @@
 var _ = require('underscore');
 var GridModel = require('./grid/GridModel');
-var size = 50;
+var size = 100;
 var canvas = document.getElementById("canvas");
 var startButton = document.getElementById("start");
 startButton.addEventListener("click", start, false);
 var stopButton = document.getElementById("stop");
 stopButton.addEventListener("click", stop, false);
 
-var view = require('./grid/GridView').init(canvas, {size:size,positionLeft:"100px",positionTop:"100px"});
+var view = require('./grid/GridView').init(canvas, {size:size,scale:5,positionLeft:"100px",positionTop:"100px"});
 var model = new GridModel(size);
 
 view.onCellClick(function(cell){

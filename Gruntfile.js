@@ -69,5 +69,5 @@ module.exports = function(grunt) {
 //    grunt.registerTask('default', ['test',  'dist']);
 
     grunt.registerTask('test', ['watchify:grid','jasmine:grid']);
-
+    grunt.registerTask('dist', ['watchify:dist']);
 };
