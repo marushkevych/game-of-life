@@ -6,9 +6,14 @@ var canvas = document.getElementById("canvas");
 var startButton = document.getElementById("start");
 var stopButton = document.getElementById("stop");
 var clearButton = document.getElementById("clear");
+var buttons = document.getElementById("buttons");
+var sample1 = document.getElementById("1");
+var sample2 = document.getElementById("2");
 startButton.addEventListener("click", start, false);
 stopButton.addEventListener("click", stop, false);
 clearButton.addEventListener("click", clear, false);
+sample1.addEventListener("click", sampleSetup, false);
+sample2.addEventListener("click", simmetricSetup, false);
 
 var text = document.getElementById("text");
 text.style.left = '20px';
@@ -35,7 +40,7 @@ else
     sampleSetup();
 
 function simmetricSetup(){
-    
+    clear();
     model.getCell(43,50).isAlive=true; 
     model.getCell(44,49).isAlive=true; 
     model.getCell(44,51).isAlive=true; 
@@ -68,6 +73,7 @@ function simmetricSetup(){
 }
 
 function sampleSetup(){
+    clear();
     // initial setup
     model.getCell(2,3).isAlive=true;
     model.getCell(3,4).isAlive=true;
@@ -119,8 +125,7 @@ function clear(){
 
 
 function stop() {
-    startButton.style.display = "inline";
-    clearButton.style.display = "inline";
+    buttons.style.display = "inline";
     stopButton.style.display = "none";
     clearInterval(intervalId);
 }
@@ -134,13 +139,12 @@ function logCurrentState(){
 
 // main loop
 function start() {
-    startButton.style.display = "none";
-    clearButton.style.display = "none";
+    buttons.style.display = "none";
     stopButton.style.display = "inline";
     intervalId = setInterval(tick, 150);
 
     // log initial setup
-    logCurrentState();
+//    logCurrentState();
 
     function tick() {
         // gather changes
