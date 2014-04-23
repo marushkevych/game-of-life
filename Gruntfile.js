@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                 dest: 'spec/grid/spec-bundle.js'
             },
             dist: {
-                src: './js/grid/Grid.js',
+                src: './js/controller.js',
                 dest: 'js/bundle.js'
             }
             
