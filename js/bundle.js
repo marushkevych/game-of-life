@@ -34,6 +34,7 @@ model.getCell(3,4).isAlive=true;
 model.getCell(4,2).isAlive=true;
 model.getCell(4,3).isAlive=true;
 model.getCell(4,4).isAlive=true; 
+
 model.getCell(39,46).isAlive=true; 
 model.getCell(39,47).isAlive=true; 
 model.getCell(39,48).isAlive=true; 
@@ -49,7 +50,19 @@ model.getCell(44,49).isAlive=true;
 model.getCell(45,46).isAlive=true; 
 model.getCell(45,47).isAlive=true; 
 model.getCell(45,48).isAlive=true; 
-model.getCell(46,47).isAlive=true;    
+model.getCell(46,47).isAlive=true;  
+
+model.getCell(67,75).isAlive=true; 
+model.getCell(67,79).isAlive=true; 
+model.getCell(68,75).isAlive=true; 
+model.getCell(68,79).isAlive=true; 
+model.getCell(69,75).isAlive=true; 
+model.getCell(69,79).isAlive=true; 
+model.getCell(70,75).isAlive=true; 
+model.getCell(70,79).isAlive=true; 
+model.getCell(71,75).isAlive=true; 
+model.getCell(71,79).isAlive=true; 
+
 model.eachCell(function(cell) {
     cell.isAlive ? view.fillCell(cell) : view.clearCell(cell);
 });    
