@@ -107,6 +107,21 @@ function sampleSetup(){
     model.getCell(70,79).isAlive=true; 
     model.getCell(71,75).isAlive=true; 
     model.getCell(71,79).isAlive=true; 
+    
+    model.getCell(77,12).isAlive=true; 
+    model.getCell(77,13).isAlive=true; 
+    model.getCell(77,21).isAlive=true; 
+    model.getCell(77,22).isAlive=true; 
+    model.getCell(78,10).isAlive=true; 
+    model.getCell(78,11).isAlive=true; 
+    model.getCell(78,14).isAlive=true; 
+    model.getCell(78,20).isAlive=true; 
+    model.getCell(78,23).isAlive=true; 
+    model.getCell(78,24).isAlive=true; 
+    model.getCell(79,12).isAlive=true; 
+    model.getCell(79,13).isAlive=true; 
+    model.getCell(79,21).isAlive=true; 
+    model.getCell(79,22).isAlive=true; 
 
     model.eachCell(function(cell) {
         cell.isAlive ? view.fillCell(cell) : view.clearCell(cell);
