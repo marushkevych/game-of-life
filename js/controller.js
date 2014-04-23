@@ -7,7 +7,7 @@ startButton.addEventListener("click", start, false);
 var stopButton = document.getElementById("stop");
 stopButton.addEventListener("click", stop, false);
 
-var view = require('./grid/GridView').init(canvas, {size:size,scale:5,positionLeft:"100px",positionTop:"100px"});
+var view = require('./grid/GridView').init(canvas, {size:size,scale:7,positionLeft:"100px",positionTop:"100px"});
 var model = new GridModel(size);
 
 view.onCellClick(function(cell){
