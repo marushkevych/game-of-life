@@ -8,7 +8,8 @@ exports.init = function(canvas, userConfig) {
         scale: 10,
         positionLeft: "0px",
         positionTop: "0px",
-        strokeStyle: "#eee"
+        gridStyle: "#eee",
+        borderStyle: "#bbb"
     };
 
     var onCellClickHandler;
@@ -69,20 +70,39 @@ exports.init = function(canvas, userConfig) {
     }
 
     function paintGrid() {
-// grid
         var context = canvas.getContext("2d");
-
-        for (var x = 0; x <= length; x += config.scale) {
+        
+        
+        // vertical
+        for (var x = config.scale; x <= length - config.scale; x += config.scale) {
             context.moveTo(x + 0.5, 0);
             context.lineTo(x + 0.5, length);
         }
 
-        for (var y = 0; y <= length; y += config.scale) {
+        // horisontal
+        for (var y = config.scale; y <= length - config.scale; y += config.scale) {
             context.moveTo(0, y + 0.5);
             context.lineTo(length, y + 0.5);
         }
 
-        context.strokeStyle = config.strokeStyle;
+        context.strokeStyle = config.gridStyle;
+        context.stroke();
+        
+        
+        // border
+        context.beginPath();
+        context.moveTo(0.5, 0);
+        context.lineTo(0.5, length);        
+        context.moveTo(length + 0.5, 0);
+        context.lineTo(length + 0.5, length);  
+        
+        context.moveTo(0, 0.5);
+        context.lineTo(length, 0.5);        
+        context.moveTo(0, length + 0.5);
+        context.lineTo(length, length + 0.5);        
+        
+        
+        context.strokeStyle = config.borderStyle;
         context.stroke();
     }
 

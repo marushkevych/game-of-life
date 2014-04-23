@@ -6,16 +6,30 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Conway's Game of Life</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
     </head>
     <body>
+        <h2>Conway's Game of Life</h2>
+        <a href="#" id="start">Start</a>
+        <a href="#" id="stop" style="display:none">Stop</a> &nbsp;
+        <a href="#" id="clear" >Clear</a>
         <div>
-            <canvas id="canvas" width="401" height="401" ></canvas>
+            <canvas id="canvas"  ></canvas>
         </div>
-        <a href="#" id="start">Click to start</a>
-        <a href="#" id="stop">Click to stop</a>
+        
+        <div id="text">
+            <ul>
+                <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
+                <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
+                <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
+                <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
+            </ul>
+            The initial pattern constitutes the seed of the system. 
+            Clear the grid and create your own seed and watch it morph, prosper or die.
+        </div>
+            
         <script src="js/bundle.js" ></script>
     </body>
 </html>
