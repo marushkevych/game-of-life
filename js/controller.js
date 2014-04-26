@@ -19,7 +19,7 @@ text.style.left = '20px';
 text.style.top = '820px';
 text.style.position = "absolute";        
 
-var view = grid.GridView.init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
+var view = new grid.GridView(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
 var model = new grid.GridModel(size);
 var intervalId;
 
