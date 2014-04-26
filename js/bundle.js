@@ -1,6 +1,6 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var _ = require('underscore');
-var GridModel = require('./grid/GridModel');
+var grid = require('game-grid');
 var size = 100;
 var canvas = document.getElementById("canvas");
 var startButton = document.getElementById("start");
@@ -20,8 +20,8 @@ text.style.left = '20px';
 text.style.top = '820px';
 text.style.position = "absolute";        
 
-var view = require('./grid/GridView').init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
-var model = new GridModel(size);
+var view = grid.GridView.init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
+var model = new grid.GridModel(size);
 var intervalId;
 
 view.onCellClick(function(cell) {
@@ -203,7 +203,7 @@ function getNextState(cell) {
         return false;
     }
 }
-},{"./grid/GridModel":3,"./grid/GridView":4,"underscore":5}],2:[function(require,module,exports){
+},{"game-grid":5,"underscore":6}],2:[function(require,module,exports){
 module.exports = function Cell(x,y){
     this.x = x;
     this.y = y;
@@ -323,7 +323,7 @@ GridModel.prototype.getNextCellLeft = function(x,y)
 
 
 
-},{"./Cell":2,"underscore":5}],4:[function(require,module,exports){
+},{"./Cell":2,"underscore":6}],4:[function(require,module,exports){
 var _ = require('underscore');
 exports.init = function(canvas, userConfig) {
 
@@ -449,7 +449,13 @@ exports.init = function(canvas, userConfig) {
         paintGrid: paintGrid
     };
 };
-},{"underscore":5}],5:[function(require,module,exports){
+},{"underscore":6}],5:[function(require,module,exports){
+exports.GridView = require("./GridView")
+exports.GridModel = require("./GridModel")
+exports.Cell = require("./Cell")
+
+
+},{"./Cell":2,"./GridModel":3,"./GridView":4}],6:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

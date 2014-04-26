@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var GridModel = require('./grid/GridModel');
+var grid = require('game-grid');
 var size = 100;
 var canvas = document.getElementById("canvas");
 var startButton = document.getElementById("start");
@@ -19,8 +19,8 @@ text.style.left = '20px';
 text.style.top = '820px';
 text.style.position = "absolute";        
 
-var view = require('./grid/GridView').init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
-var model = new GridModel(size);
+var view = grid.GridView.init(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
+var model = new grid.GridModel(size);
 var intervalId;
 
 view.onCellClick(function(cell) {
