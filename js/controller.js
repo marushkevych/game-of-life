@@ -1,18 +1,18 @@
 var _ = require('underscore');
 var grid = require('game-grid');
+var url = require('url');
+
 var size = 100;
 var canvas = document.getElementById("canvas");
 var startButton = document.getElementById("start");
 var stopButton = document.getElementById("stop");
 var clearButton = document.getElementById("clear");
 var buttons = document.getElementById("buttons");
-var sample1 = document.getElementById("1");
-var sample2 = document.getElementById("2");
+//var share = document.getElementById("share");
 startButton.addEventListener("click", start, false);
 stopButton.addEventListener("click", stop, false);
 clearButton.addEventListener("click", clear, false);
-sample1.addEventListener("click", sampleSetup, false);
-sample2.addEventListener("click", simmetricSetup, false);
+//share.addEventListener("click", shareSeed, false);
 
 var text = document.getElementById("text");
 text.style.left = '20px';
@@ -32,101 +32,21 @@ view.onCellClick(function(cell) {
 });
 
 view.paintGrid();
-console.log(window.location.search)
-if(window.location.search == "?cool")
-    simmetricSetup();
-else
-    sampleSetup();
 
-function simmetricSetup(){
-    clear();
-    model.getCell(43,50).isAlive=true; 
-    model.getCell(44,49).isAlive=true; 
-    model.getCell(44,51).isAlive=true; 
-    model.getCell(45,49).isAlive=true; 
-    model.getCell(45,51).isAlive=true; 
-    model.getCell(46,50).isAlive=true; 
-    model.getCell(48,45).isAlive=true; 
-    model.getCell(48,46).isAlive=true; 
-    model.getCell(48,54).isAlive=true; 
-    model.getCell(48,55).isAlive=true; 
-    model.getCell(49,44).isAlive=true; 
-    model.getCell(49,47).isAlive=true; 
-    model.getCell(49,53).isAlive=true; 
-    model.getCell(49,56).isAlive=true; 
-    model.getCell(49,57).isAlive=true; 
-    model.getCell(50,45).isAlive=true; 
-    model.getCell(50,46).isAlive=true; 
-    model.getCell(50,54).isAlive=true; 
-    model.getCell(50,55).isAlive=true; 
-    model.getCell(52,50).isAlive=true; 
-    model.getCell(53,49).isAlive=true; 
-    model.getCell(53,51).isAlive=true; 
-    model.getCell(54,49).isAlive=true; 
-    model.getCell(54,51).isAlive=true; 
-    model.getCell(55,50).isAlive=true; 
-    
-    model.eachCell(function(cell) {
-        cell.isAlive ? view.fillCell(cell) : view.clearCell(cell);
-    });     
+function applySeed(seed){
+    seed.forEach(function(tuple){
+        var cell = model.getCell(tuple[0],tuple[1]);
+        cell.isAlive=true;
+        view.fillCell(cell);
+    })
 }
 
-function sampleSetup(){
-    clear();
-    // initial setup
-    model.getCell(2,3).isAlive=true;
-    model.getCell(3,4).isAlive=true;
-    model.getCell(4,2).isAlive=true;
-    model.getCell(4,3).isAlive=true;
-    model.getCell(4,4).isAlive=true; 
+var query = url.parse(window.location.search, true).query;
 
-    model.getCell(39,46).isAlive=true; 
-    model.getCell(39,47).isAlive=true; 
-    model.getCell(39,48).isAlive=true; 
-    model.getCell(40,45).isAlive=true; 
-    model.getCell(40,49).isAlive=true; 
-    model.getCell(41,44).isAlive=true; 
-    model.getCell(41,50).isAlive=true; 
-    model.getCell(42,44).isAlive=true; 
-    model.getCell(42,50).isAlive=true; 
-    model.getCell(43,47).isAlive=true; 
-    model.getCell(44,45).isAlive=true; 
-    model.getCell(44,49).isAlive=true; 
-    model.getCell(45,46).isAlive=true; 
-    model.getCell(45,47).isAlive=true; 
-    model.getCell(45,48).isAlive=true; 
-    model.getCell(46,47).isAlive=true;  
-
-    model.getCell(67,75).isAlive=true; 
-    model.getCell(67,79).isAlive=true; 
-    model.getCell(68,75).isAlive=true; 
-    model.getCell(68,79).isAlive=true; 
-    model.getCell(69,75).isAlive=true; 
-    model.getCell(69,79).isAlive=true; 
-    model.getCell(70,75).isAlive=true; 
-    model.getCell(70,79).isAlive=true; 
-    model.getCell(71,75).isAlive=true; 
-    model.getCell(71,79).isAlive=true; 
-    
-    model.getCell(77,12).isAlive=true; 
-    model.getCell(77,13).isAlive=true; 
-    model.getCell(77,21).isAlive=true; 
-    model.getCell(77,22).isAlive=true; 
-    model.getCell(78,10).isAlive=true; 
-    model.getCell(78,11).isAlive=true; 
-    model.getCell(78,14).isAlive=true; 
-    model.getCell(78,20).isAlive=true; 
-    model.getCell(78,23).isAlive=true; 
-    model.getCell(78,24).isAlive=true; 
-    model.getCell(79,12).isAlive=true; 
-    model.getCell(79,13).isAlive=true; 
-    model.getCell(79,21).isAlive=true; 
-    model.getCell(79,22).isAlive=true; 
-
-    model.eachCell(function(cell) {
-        cell.isAlive ? view.fillCell(cell) : view.clearCell(cell);
-    });    
-}
+if(query.seed){
+    var seed = JSON.parse(query.seed);
+    applySeed(seed);
+ }
 
 function clear(){
     model.eachCell(function(cell) {
@@ -134,9 +54,6 @@ function clear(){
         view.clearCell(cell);
     });
 }
-        
-
-
 
 function stop() {
     buttons.style.display = "inline";
@@ -144,10 +61,28 @@ function stop() {
     clearInterval(intervalId);
 }
 
-function logCurrentState(){
+var savedSeed;
+
+function shareSeed(){
+    if(savedSeed == null)
+    {
+        saveCurrentSeed();
+    }
+    
+    if(savedSeed)
+        alert("http://localhost:8000/?seed="+savedSeed)
+    else
+        alert('nothing to share')
+}
+
+function saveCurrentSeed(){
+    var json = "";
     model.eachCell(function(cell) {
-        if(cell.isAlive) console.log("model.getCell("+cell.x+"," +  cell.y +").isAlive=true;")
+        if(cell.isAlive)
+            json +="["+cell.x+"," +  cell.y +"],"
     });
+    if(json)
+        savedSeed = "["+json.replace(/,$/,"]");
 }
 
 
@@ -158,7 +93,7 @@ function start() {
     intervalId = setInterval(tick, 150);
 
     // log initial setup
-//    logCurrentState();
+    saveCurrentSeed();
 
     function tick() {
         // gather changes

@@ -32,6 +32,9 @@ module.exports = function(grunt) {
         },
         // Grunt task for node-browserify
         watchify: {
+            options: {
+                debug: true
+            },
             dev: {
                 options: {
                     keepalive: true
