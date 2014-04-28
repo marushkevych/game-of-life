@@ -12,25 +12,15 @@
              requiring no further input. <br>
             One interacts with the Game of Life by creating an initial configuration 
             and observing how it evolves.
-            <h2>Rules</h2>
-            The universe of the Game of Life is an infinite two-dimensional orthogonal grid of square cells, 
-            each of which is in one of two possible states, alive or dead. Every cell interacts with its eight neighbours, 
-            which are the cells that are horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
-            <ul>
-                <li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
-                <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
-                <li>Any live cell with more than three live neighbours dies, as if by overcrowding.</li>
-                <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
-            </ul>
-            The initial pattern constitutes the seed of the system. 
+            <p>See <a href="http://en.wikipedia.org/wiki/Conway's_Game_of_Life">wikipedia</a> for details.</p>
             Clear the grid, create your own seed, click START and watch it morph, prosper or die.
         </div>
         <br>
         <div>
             <button id="stop" style="display:none">STOP</button> 
             <span id="buttons">
-                <button id="start">START</button> &nbsp;&nbsp;
-                <button id="clear" >Clear</button>&nbsp;&nbsp;
+                <button id="start">START</button> &nbsp;
+                <button id="clear" >CLEAR</button>&nbsp;&nbsp;
                 <a href="?seed=[[2,3],[3,4],[4,2],[4,3],[4,4],[39,46],[39,47],[39,48],[40,45],[40,49],[41,44],[41,50],[42,44],[42,50],[43,47],[44,45],[44,49],[45,46],[45,47],[45,48],[46,47],[67,75],[67,79],[68,75],[68,79],[69,75],[69,79],[70,75],[70,79],[71,75],[71,79],[77,12],[77,13],[77,21],[77,22],[78,10],[78,11],[78,14],[78,20],[78,23],[78,24],[79,12],[79,13],[79,21],[79,22]]">
                     Seed 1</a>&nbsp;&nbsp;
                 <a href="?seed=[[43,50],[44,49],[44,51],[45,49],[45,51],[46,50],[48,45],[48,46],[48,54],[48,55],[49,44],[49,47],[49,53],[49,56],[49,57],[50,45],[50,46],[50,54],[50,55],[52,50],[53,49],[53,51],[54,49],[54,51],[55,50]]" >
