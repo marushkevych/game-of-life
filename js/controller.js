@@ -8,18 +8,15 @@ var startButton = document.getElementById("start");
 var stopButton = document.getElementById("stop");
 var clearButton = document.getElementById("clear");
 var buttons = document.getElementById("buttons");
-//var share = document.getElementById("share");
+var share = document.getElementById("share");
 startButton.addEventListener("click", start, false);
 stopButton.addEventListener("click", stop, false);
 clearButton.addEventListener("click", clear, false);
 //share.addEventListener("click", shareSeed, false);
 
 var text = document.getElementById("text");
-text.style.left = '20px';
-text.style.top = '820px';
-text.style.position = "absolute";        
 
-var view = new grid.GridView(canvas, {size: size, scale: 7, positionLeft: "20px", positionTop: "100px"});
+var view = new grid.GridView(canvas, {size: size, scale: 7});
 var model = new grid.GridModel(size);
 var intervalId;
 
@@ -81,8 +78,12 @@ function saveCurrentSeed(){
         if(cell.isAlive)
             json +="["+cell.x+"," +  cell.y +"],"
     });
-    if(json)
+    if(json){
         savedSeed = "["+json.replace(/,$/,"]");
+        share.href = "?seed="+savedSeed;
+        share.style.display = "inline";
+        
+    }
 }
 
 
